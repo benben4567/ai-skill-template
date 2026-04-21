@@ -70,17 +70,8 @@ The AI **may run local commands** for verification, provided:
 
 ---
 
-## 4) PHP/Laravel Defaults (only when the repo is Laravel/PHP)
-If this is a Laravel repo:
-- Follow **PSR-12** and **PSR-4** autoloading conventions.
-- Validation: use **FormRequest** or the validation pattern already used in the repo.
-- Authorization: use **Policy/Gate**; if `spatie/laravel-permission` exists, follow the repo RBAC approach.
-- Avoid “fat controllers”, but do not split into too many classes for simple tasks.
-  - Practical rule: if logic exceeds ~30–50 lines or is reused → extract to Action/Service (if aligned with repo conventions).
-
-### Default Laravel test command
-- Prefer `composer test` if available.
-- Otherwise default to: `vendor/bin/pest`.
+## 4) Laravel Repos
+If this is a Laravel repo, also load **laravel.md** — it overrides and extends this file for all Laravel-specific rules (PSR, Artisan, test commands, authorization, etc.).
 
 ---
 
