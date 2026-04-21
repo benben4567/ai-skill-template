@@ -24,10 +24,14 @@ UI / API Entry Point:
 - UI page(s) / route(s):
 - API endpoint(s) (if any):
 
+Stack / Tech Context:
+- Stack: (e.g. Laravel, Next.js, Python, etc.)
+- Laravel? Also load: laravel.md
+
 Constraints / Notes:
-- Follow SKILL.md (and SKILL-LARAVEL.md if this is a Laravel repo)
+- Follow universal.md (and laravel.md if this is a Laravel repo)
 - No new dependencies unless explicitly approved
-- Use `php artisan make:*` for generating Laravel artifacts whenever possible
+- Laravel: use `php artisan make:*` for generating artifacts whenever possible
 - Run tests and report results (Laravel: prefer `composer test`, else `vendor/bin/pest`)
 - Update README if impacted (Overview, Requirements, Installation, Local Dev, Testing, Configuration)
 - Avoid overengineering; prefer the simplest maintainable solution
