@@ -1,30 +1,32 @@
-# SKILL (Laravel) — AI Coding Assistant Rules (Laravel-Scoped)
+# SKILL — Laravel AI Coding Assistant (Standalone)
 
-This document is a Laravel-specific working contract for any AI assistant contributing code to this repository.
-Goals: follow PSR standards, use Laravel conventions, keep solutions simple & maintainable, be production-ready, pass tests, and update README when needed.
+Working contract for any AI assistant contributing code to a Laravel repository.
+Goals: follow PSR standards, use Laravel conventions, keep solutions simple & maintainable, be production-ready, pass tests, update README when needed.
 
 ---
 
-## 0) Core Principles (Laravel)
+## 0) Core Principles
 - **Laravel conventions first:** prefer framework conventions over custom patterns.
 - **PSR compliance:** follow **PSR-12** (style) and **PSR-4** (autoload).
-- **Generate, don’t handcraft:** prefer `php artisan make:*` to create Laravel classes/files.
+- **Generate, don't handcraft:** prefer `php artisan make:*` to create Laravel classes/files.
 - **Simple over clever:** avoid overengineering; keep changes minimal and consistent.
-- **Verified:** work is “done” only when **tests pass** (default: Pest).
+- **Context-first:** inspect repo structure and configuration before proposing solutions.
+- **Verified:** work is "done" only when **tests pass** (default: Pest).
 - **Docs:** update README sections whenever install/run/config changes.
 
 ---
 
 ## 1) Non-Negotiable Constraints
 - **Forbidden:** `git commit`, `push`, `merge`, PR creation, history rewriting.
-- **Forbidden:** inventing requirements or hidden scope.
+- **Forbidden:** inventing requirements, tables, endpoints, flows, or files not explicitly requested.
 - **Forbidden:** adding new packages without explicit approval.
-- **No secrets:** never output real `.env` secret values.
+- **No secrets:** never output real `.env` secret values. Use placeholders + instructions.
 - **No destructive commands** without explicit approval (see Section 7).
 
 ---
 
 ## 2) Required Working Method
+
 ### Step A — Laravel Repo Recon
 Before coding, the AI must:
 1) Identify Laravel version, app type (web/API/admin/Filament), auth approach (session/Sanctum/Passport/SSO).
@@ -68,12 +70,21 @@ Run tests and relevant tooling, report pass/fail:
 - Follow **PSR-12** formatting for PHP code.
 - Follow **PSR-4** autoloading; respect namespaces and folder structure.
 - Do not introduce inconsistent naming conventions.
-- Prefer typed properties/parameters/returns where it improves clarity, but avoid excessive abstraction.
+- Use typed properties/parameters/returns where it improves clarity; avoid excessive abstraction.
 
 ---
 
-## 4) Mandatory: Use `php artisan make:*` for Generating Files
-Whenever creating common Laravel artifacts, prefer Artisan generators instead of hand-writing:
+## 4) General Best Practices
+- Avoid duplicated logic; refactor only when it improves maintainability.
+- Keep error handling consistent with repo patterns (web redirects vs JSON responses).
+- Log only where meaningful (error paths / audits); avoid noisy logs.
+- Follow existing repo conventions: naming, folder structure, architecture patterns.
+- Find existing patterns for similar features before writing new ones.
+
+---
+
+## 5) Mandatory: Use `php artisan make:*` for Generating Files
+Whenever creating common Laravel artifacts, prefer Artisan generators:
 - Models: `php artisan make:model ...`
 - Migrations: `php artisan make:migration ...`
 - Controllers: `php artisan make:controller ...`
@@ -81,7 +92,7 @@ Whenever creating common Laravel artifacts, prefer Artisan generators instead of
 - Policies: `php artisan make:policy ...`
 - Events/Listeners/Jobs/Notifications: `php artisan make:event|listener|job|notification ...`
 - Commands: `php artisan make:command ...`
-- Tests: `php artisan make:test ...` (then adapt to Pest conventions if used)
+- Tests: `php artisan make:test ...` (adapt to Pest conventions if used)
 
 Rules:
 - If a generator exists, use it.
@@ -90,28 +101,16 @@ Rules:
 
 ---
 
-## 5) Laravel Best Practices (Default)
+## 6) Laravel Best Practices
 - **Validation:** prefer FormRequest for non-trivial validation.
 - **Authorization:** use Policies/Gates; if `spatie/laravel-permission` exists, follow that RBAC approach.
-- **Controllers:** keep controllers thin; extract to Action/Service only when logic is large or reused.
-  - Practical rule: logic > ~30–50 lines or reused → extract (but don’t over-split).
-- **Error handling:** consistent responses (web redirects vs JSON API responses).
+- **Controllers:** keep thin; extract to Action/Service only when logic is large (>30–50 lines) or reused.
 - **Database:** prefer safe incremental migrations; avoid destructive changes without approval.
-- **Configuration:** prefer `config/*` + env keys, but never include secret values.
+- **Configuration:** prefer `config/*` + env keys; never include secret values.
 
 ---
 
-## 6) Testing Defaults (Laravel)
-- Prefer repo scripts: `composer test` if present.
-- Otherwise default to: `vendor/bin/pest`.
-- Add/adjust tests for new behavior:
-  - Feature tests for endpoints/UI flows
-  - Unit tests for isolated logic where appropriate
-- If the repo uses factories/seeders, follow existing patterns.
-
----
-
-## 7) Command Execution Policy (Local Runs Allowed)
+## 7) Command Execution Policy
 ### Allowed (generally safe)
 - `composer install`
 - `php artisan key:generate` (local only, if needed)
@@ -124,36 +123,47 @@ Rules:
 - `php artisan migrate:fresh`
 - `php artisan db:wipe`
 - `php artisan migrate:refresh`
-- mass deletions, big seeds, anything that resets DB/data
+- Mass deletions, big seeds, anything that resets DB/data
 
-If a forbidden command is needed:
-- stop and request explicit approval.
+If a forbidden command is needed: stop and request explicit approval.
 
 ---
 
-## 8) Anti-Overkill Guardrails (Required)
+## 8) Test Runner Detection
+Detect correct test runner in this order:
+1) Inspect `composer.json` scripts → if `composer test` exists, use it.
+2) Inspect `phpunit.xml` or `pest.php` → use `vendor/bin/pest` or `vendor/bin/phpunit`.
+3) Inspect `.github/workflows/` or `.gitlab-ci.yml` → follow CI steps.
+
+Rules:
+- If `composer test` exists → use it.
+- If CI config exists → follow CI steps for tests.
+- Add/adjust tests for new behavior: Feature tests for endpoints/flows, Unit tests for isolated logic.
+
+---
+
+## 9) Anti-Overkill Guardrails (Required)
 Do NOT introduce:
-- big new architecture (DDD/CQRS/event-driven) not already used
-- repository/DTO layers for simple cases
-- extra packages without approval
+- Large new architecture (DDD/CQRS/event-driven) not already used.
+- Repository/DTO layers for simple cases.
+- Extra packages without approval.
 
 When in doubt: choose the simplest Laravel-native approach.
 
 ---
 
-## 9) Definition of Done (DoD)
+## 10) Definition of Done (DoD)
 A task is done when:
-- ✅ acceptance criteria met
+- ✅ Acceptance criteria met
 - ✅ Pest tests pass
 - ✅ PSR-12/PSR-4 respected and consistent with repo conventions
-- ✅ no new dependencies without approval
+- ✅ No new dependencies without approval
 - ✅ README updated if install/run/config changed
 
 ---
 
-## 10) README Update Policy (Required)
-If changes affect running/config/deps:
-Update README with all relevant sections:
+## 11) README Update Policy (Required)
+If changes affect running/config/deps, update README with all relevant sections:
 - Overview
 - Requirements
 - Installation
@@ -166,14 +176,14 @@ If not impacted: output `README: no changes required`.
 
 ---
 
-## 11) Assumptions Policy (Always Required)
+## 12) Assumptions Policy (Always Required)
 Always include an Assumptions section:
 - If none: `Assumptions: none`
 - If ambiguous: list numbered assumptions and request confirmation before major changes.
 
 ---
 
-## 12) Required Output Format After Implementation
+## 13) Required Output Format After Implementation
 Close with:
 1) Change summary (bullets)
 2) Files generated/changed (explicitly note what was generated via Artisan)

@@ -4,37 +4,44 @@ Rules and task brief templates for AI coding assistants.
 
 ---
 
-## Files
+## Structure
 
-| File | Purpose |
-|------|---------|
-| `universal.md` | Base rules for all stacks (anti-hallucination, working method, DoD, output format) |
-| `laravel.md` | Laravel-specific rules — extends universal.md (PSR, Artisan, Pest, migrations, authz) |
-| `task-brief.md` | Task brief template — fill per task, paste alongside skill files |
+```
+skills/
+  laravel.md       ← standalone skill for Laravel projects
+  universal.md     ← standalone skill for non-Laravel stacks
+  _new-stack.md    ← scaffold: copy this to add a new stack
+context/
+  task-brief.md    ← fill per task
+README.md
+```
 
 ---
 
 ## How to Use
 
+Copy relevant files into your project's `.ai/` folder:
+
 ### Laravel project
-Paste both files at session start:
 ```
-[universal.md content]
-[laravel.md content]
-[filled task-brief.md]
+.ai/
+  SKILL.md     ← copy from skills/laravel.md
+  CONTEXT.md   ← copy from context/task-brief.md (fill per task)
 ```
 
 ### Other stack
-Paste only universal + task brief:
 ```
-[universal.md content]
-[filled task-brief.md]
+.ai/
+  SKILL.md     ← copy from skills/universal.md
+  CONTEXT.md   ← copy from context/task-brief.md (fill per task)
 ```
+
+Then paste both files at the start of your AI session.
 
 ---
 
 ## Adding a New Stack
 
-1. Copy `laravel.md` as starting point
-2. Replace Laravel-specific sections (Artisan, PSR, Pest) with stack equivalents
-3. Reference in `task-brief.md` constraints section
+1. Copy `skills/_new-stack.md` → `skills/{stack}.md`
+2. Fill in all `<!-- ... -->` placeholders and stack-specific sections
+3. Make it standalone — do not depend on universal.md
