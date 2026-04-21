@@ -27,6 +27,8 @@ UI / API Entry Point:
 Stack / Tech Context:
 - Stack: (e.g. Laravel, Next.js, Python, etc.)
 - Laravel? Also load: laravel.md
+- UI Layer: [ ] Livewire  [ ] Filament  [ ] Blade only  [ ] API only
+- Extra packages aktif di project ini (selain default):
 
 Constraints / Notes:
 - Follow universal.md (and laravel.md if this is a Laravel repo)

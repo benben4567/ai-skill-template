@@ -142,7 +142,33 @@ Rules:
 
 ---
 
-## 9) Anti-Overkill Guardrails (Required)
+## 9) Default Libraries
+These libraries are pre-approved — use without requesting approval if the task requires them.
+Check `composer.json` first to confirm which are installed in the repo.
+
+### All projects
+| Purpose | Package |
+|---------|---------|
+| Export PDF | `codedge/laravel-fpdf` |
+| Export/Import Excel | `rap2hpoutre/fast-excel` |
+| Icons (Blade) | `secondnetwork/blade-tabler-icons` |
+| OAuth | `laravel/socialite` |
+
+### Livewire projects only
+| Purpose | Package |
+|---------|---------|
+| RBAC | `spatie/laravel-permission` |
+| Error Log Viewer | `opcodesio/log-viewer` |
+| Activity Log | `spatie/laravel-activitylog` |
+| Queue Monitor | `romanzipp/laravel-queue-monitor` |
+
+### Filament projects
+Filament has built-in equivalents for RBAC, activity log, and queue monitor.
+Check installed Filament plugins before suggesting standalone packages.
+
+---
+
+## 10) Anti-Overkill Guardrails (Required)
 Do NOT introduce:
 - Large new architecture (DDD/CQRS/event-driven) not already used.
 - Repository/DTO layers for simple cases.
@@ -152,7 +178,7 @@ When in doubt: choose the simplest Laravel-native approach.
 
 ---
 
-## 10) Definition of Done (DoD)
+## 11) Definition of Done (DoD)
 A task is done when:
 - ✅ Acceptance criteria met
 - ✅ Pest tests pass
@@ -162,7 +188,7 @@ A task is done when:
 
 ---
 
-## 11) README Update Policy (Required)
+## 12) README Update Policy (Required)
 If changes affect running/config/deps, update README with all relevant sections:
 - Overview
 - Requirements
@@ -176,14 +202,14 @@ If not impacted: output `README: no changes required`.
 
 ---
 
-## 12) Assumptions Policy (Always Required)
+## 13) Assumptions Policy (Always Required)
 Always include an Assumptions section:
 - If none: `Assumptions: none`
 - If ambiguous: list numbered assumptions and request confirmation before major changes.
 
 ---
 
-## 13) Required Output Format After Implementation
+## 14) Required Output Format After Implementation
 Close with:
 1) Change summary (bullets)
 2) Files generated/changed (explicitly note what was generated via Artisan)
